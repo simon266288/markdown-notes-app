@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
-import rehypeHighlight from 'rehype-highlight';
-import 'highlight.js/styles/github-dark.css';
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 interface MarkdownPreviewProps {
   content: string;
@@ -13,7 +13,6 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content }) => 
     <div className="prose dark:prose-invert max-w-none">
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeHighlight]}
         components={{
           h1: ({ children }) => <h1 className="text-3xl font-bold mb-4">{children}</h1>,
           h2: ({ children }) => <h2 className="text-2xl font-bold mb-3 mt-6">{children}</h2>,
@@ -27,9 +26,10 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content }) => 
               {children}
             </blockquote>
           ),
-          code: ({ className, children, ...props }) => {
+          code: ({ className, children, node, ...props }) => {
             const match = /language-(\w+)/.exec(className || '');
             const isInline = !match && !className;
+
             if (isInline) {
               return (
                 <code className="bg-gray-100 dark:bg-gray-800 rounded px-1 py-0.5 text-sm" {...props}>
@@ -37,19 +37,31 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content }) => 
                 </code>
               );
             }
+
+            // 块级代码块
+            const language = match ? match[1] : 'plaintext';
+            const codeString = String(children).replace(/\n$/, '');
+
             return (
-              <code className={className} {...props}>
-                {children}
-              </code>
+              <SyntaxHighlighter
+                language={language}
+                style={vscDarkPlus}
+                customStyle={{
+                  margin: '0 0 1rem 0',
+                  borderRadius: '0.5rem',
+                  padding: '1rem',
+                  fontSize: '0.875rem',
+                  lineHeight: '1.5',
+                }}
+                showLineNumbers={true}
+                lineNumberStyle={{ minWidth: '2.5em', paddingRight: '1em', color: '#6b7280' }}
+              >
+                {codeString}
+              </SyntaxHighlighter>
             );
           },
-          pre: ({ children }) => (
-            <pre className="bg-gray-900 dark:bg-gray-800 rounded-lg p-4 overflow-x-auto mb-4">
-              {children}
-            </pre>
-          ),
           a: ({ href, children }) => (
-            <a href={href} className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+            <a href={href} className="text-blue-600 dark:text-blue-400 hover:underline" target="_blank" rel="noopener noreferrer">
               {children}
             </a>
           ),
