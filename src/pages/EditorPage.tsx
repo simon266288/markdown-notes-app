@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Trash2, Save } from 'lucide-react';
+import { ArrowLeft, Trash2 } from 'lucide-react';
 import { MarkdownEditor } from '../components/MarkdownEditor';
 import { MarkdownPreview } from '../components/MarkdownPreview';
 import { Button } from '../components/ui/Button';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { useNotes } from '../hooks/useNotes';
 import { getNoteById, createNote } from '../utils/storage';
+import { useTheme } from '../contexts/ThemeContext';
 
 export const EditorPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { theme } = useTheme();
   const { modifyNote, removeNote } = useNotes();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -90,21 +93,22 @@ export const EditorPage: React.FC = () => {
           <span className={`text-sm ${isSaving ? 'text-gray-500' : 'text-green-600'}`}>
             {isSaving ? '保存中...' : '已保存'}
           </span>
+          <ThemeToggle />
           <Button variant="ghost" size="sm" onClick={handleDelete}>
             <Trash2 className="w-4 h-4" />
           </Button>
         </div>
       </header>
 
-      {/* Editor and Preview */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Editor */}
-        <div className="w-1/2 h-full border-r border-gray-200 dark:border-gray-700">
-          <MarkdownEditor value={content} onChange={setContent} isDark={true} />
+      {/* Editor and Preview - Responsive Layout */}
+      <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">
+        {/* Editor - Full width on mobile, half on desktop */}
+        <div className="w-full lg:w-1/2 h-1/2 lg:h-full border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-gray-700">
+          <MarkdownEditor value={content} onChange={setContent} isDark={theme === 'dark'} />
         </div>
 
-        {/* Preview */}
-        <div className="w-1/2 h-full overflow-auto p-6 bg-white dark:bg-gray-900">
+        {/* Preview - Full width on mobile, half on desktop */}
+        <div className="w-full lg:w-1/2 h-1/2 lg:h-full overflow-auto p-4 lg:p-6 bg-white dark:bg-gray-900">
           <MarkdownPreview content={content} />
         </div>
       </div>

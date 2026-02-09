@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, Plus, Moon, Sun } from 'lucide-react';
+import { Search, Plus } from 'lucide-react';
 import { NoteCard } from '../components/NoteCard';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
+import { ThemeToggle } from '../components/ThemeToggle';
 import { useNotes } from '../hooks/useNotes';
 
 export const NotesList: React.FC = () => {
@@ -40,6 +41,7 @@ export const NotesList: React.FC = () => {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">我的笔记</h1>
           <div className="flex items-center gap-3">
+            <ThemeToggle />
             <Button onClick={handleNewNote} size="sm">
               <Plus className="w-4 h-4 mr-1" />
               新建
