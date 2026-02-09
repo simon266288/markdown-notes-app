@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Trash2, Save } from 'lucide-react';
 import { Note } from '../types/note';
 import { MarkdownEditor } from '../components/MarkdownEditor';
+import { MarkdownPreview } from '../components/MarkdownPreview';
 import { Button } from '../components/ui/Button';
 
 // Mock function to get note (will be replaced with real implementation)
@@ -11,7 +12,7 @@ const getNoteById = (id: string): Note | null => {
   const mockNote: Note = {
     id: id,
     title: 'Sample Note',
-    content: '# Hello World\n\nStart writing your markdown here...',
+    content: '# Hello World\n\nStart writing your markdown here...\n\n```javascript\nconsole.log("Hello");\n```',
     updatedAt: Date.now(),
     createdAt: Date.now(),
   };
@@ -75,14 +76,10 @@ export const EditorPage: React.FC = () => {
             {isSaving ? '保存中...' : '已保存'}
           </span>
           <button
-            onClick={() => setIsDark(!isDark)}
+            onClick={handleSave}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
-            {isDark ? (
-              <Save className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-            ) : (
-              <Save className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-            )}
+            <Save className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
           <Button variant="ghost" size="sm" onClick={handleDelete}>
             <Trash2 className="w-4 h-4" />
@@ -98,10 +95,8 @@ export const EditorPage: React.FC = () => {
         </div>
 
         {/* Preview */}
-        <div className="w-1/2 h-full overflow-auto p-4 bg-white dark:bg-gray-900">
-          <div className="prose dark:prose-invert max-w-none">
-            <pre className="whitespace-pre-wrap">{content}</pre>
-          </div>
+        <div className="w-1/2 h-full overflow-auto p-6 bg-white dark:bg-gray-900">
+          <MarkdownPreview content={content} />
         </div>
       </div>
     </div>
