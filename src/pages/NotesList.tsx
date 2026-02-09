@@ -1,34 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Plus, Moon, Sun } from 'lucide-react';
-import { Note } from '../types/note';
 import { NoteCard } from '../components/NoteCard';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
-
-// Mock data for now
-const mockNotes: Note[] = [
-  {
-    id: '1',
-    title: 'Project Ideas',
-    content: 'Brainstorming for the new feature...\n\n# Hello World\n\nThis is my first note.',
-    updatedAt: new Date('2023-10-26').getTime(),
-    createdAt: new Date('2023-10-26').getTime(),
-  },
-  {
-    id: '2',
-    title: 'Meeting Notes',
-    content: 'Discussion about the roadmap...\n\n- Item 1\n- Item 2',
-    updatedAt: new Date('2023-10-25').getTime(),
-    createdAt: new Date('2023-10-25').getTime(),
-  },
-];
+import { useNotes } from '../hooks/useNotes';
 
 export const NotesList: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const [isDark, setIsDark] = useState(false);
-  const [notes] = useState<Note[]>(mockNotes);
+  const { notes, isLoaded, addNote } = useNotes();
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -36,13 +17,21 @@ export const NotesList: React.FC = () => {
   );
 
   const handleNewNote = () => {
-    const newId = crypto.randomUUID();
-    navigate(`/note/${newId}`);
+    const newNote = addNote();
+    navigate(`/note/${newNote.id}`);
   };
 
   const handleNoteClick = (noteId: string) => {
     navigate(`/note/${noteId}`);
   };
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+        <div className="text-gray-500 dark:text-gray-400">加载中...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -51,16 +40,6 @@ export const NotesList: React.FC = () => {
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">我的笔记</h1>
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsDark(!isDark)}
-              className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-            >
-              {isDark ? (
-                <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              ) : (
-                <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-              )}
-            </button>
             <Button onClick={handleNewNote} size="sm">
               <Plus className="w-4 h-4 mr-1" />
               新建
