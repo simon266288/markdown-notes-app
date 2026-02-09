@@ -1,5 +1,5 @@
 import React from 'react';
-import { Note } from '../types/note';
+import type { Note } from '../types/note';
 import { Card } from './ui/Card';
 
 interface NoteCardProps {

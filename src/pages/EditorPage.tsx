@@ -41,19 +41,13 @@ export const EditorPage: React.FC = () => {
     const timer = setTimeout(() => {
       if (title || content) {
         modifyNote(id, { title, content });
+        setIsSaving(true);
+        setTimeout(() => setIsSaving(false), 500);
       }
     }, 1000);
     
     return () => clearTimeout(timer);
   }, [title, content, id, modifyNote]);
-
-  const handleSave = () => {
-    if (id) {
-      modifyNote(id, { title, content });
-      setIsSaving(true);
-      setTimeout(() => setIsSaving(false), 500);
-    }
-  };
 
   const handleDelete = () => {
     if (id && window.confirm('确定要删除这个笔记吗？')) {
