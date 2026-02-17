@@ -26,7 +26,7 @@ export const MarkdownPreview: React.FC<MarkdownPreviewProps> = ({ content }) => 
               {children}
             </blockquote>
           ),
-          code: ({ className, children, node, ...props }) => {
+          code: ({ className, children, ...props }) => {
             const match = /language-(\w+)/.exec(className || '');
             const isInline = !match && !className;
 

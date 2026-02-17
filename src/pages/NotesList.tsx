@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, Plus } from 'lucide-react';
 import { NoteCard } from '../components/NoteCard';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
+import { Button, Input } from '../shared/ui';
 import { ThemeToggle } from '../components/ThemeToggle';
-import { useNotes } from '../hooks/useNotes';
+import { useNoteStore } from '../store';
 
 export const NotesList: React.FC = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
-  const { notes, isLoaded, addNote } = useNotes();
+  const { notes, isLoaded, addNote } = useNoteStore();
 
   const filteredNotes = notes.filter((note) =>
     note.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -36,7 +35,6 @@ export const NotesList: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Header */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">我的笔记</h1>
@@ -50,7 +48,6 @@ export const NotesList: React.FC = () => {
         </div>
       </header>
 
-      {/* Search */}
       <div className="max-w-4xl mx-auto px-4 py-4">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -64,7 +61,6 @@ export const NotesList: React.FC = () => {
         </div>
       </div>
 
-      {/* Notes List */}
       <main className="max-w-4xl mx-auto px-4 pb-8">
         {filteredNotes.length === 0 ? (
           <div className="text-center py-12">

@@ -1,6 +1,6 @@
 import React from 'react';
-import type { Note } from '../types/note';
-import { Card } from './ui/Card';
+import type { Note } from '../shared/types';
+import { Card } from '../shared/ui';
 
 interface NoteCardProps {
   note: Note;
