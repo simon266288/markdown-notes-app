@@ -28,3 +28,6 @@ dist-ssr
 
 # Screenshots
 screenshots/
+
+# Test scripts
+test_playwright.py
