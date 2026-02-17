@@ -34,42 +34,54 @@ npm run dev
 npm run build
 ```
 
+### 运行测试
+
+```bash
+npm run test
+```
+
 ## 📦 技术栈
 
-- **前端框架**: React 18 + TypeScript
-- **构建工具**: Vite 5
+- **前端框架**: React 19 + TypeScript
+- **构建工具**: Vite 7
 - **样式**: Tailwind CSS v4
-- **路由**: React Router v6
+- **路由**: React Router v7
+- **状态管理**: Zustand
 - **Markdown 编辑器**: CodeMirror 6
 - **Markdown 渲染**: react-markdown + remark-gfm
 - **代码高亮**: react-syntax-highlighter (Prism)
 - **图标**: Lucide React
+- **测试**: Vitest
 
 ## 📁 项目结构
 
 ```
 markdown-notes-app/
 ├── src/
-│   ├── components/          # 组件
-│   │   ├── ui/              # 基础 UI 组件
-│   │   ├── MarkdownEditor.tsx    # Markdown 编辑器
-│   │   ├── MarkdownPreview.tsx   # Markdown 预览
+│   ├── components/              # 组件
+│   │   ├── MarkdownEditor.tsx   # Markdown 编辑器
+│   │   ├── MarkdownPreview.tsx  # Markdown 预览
 │   │   ├── NoteCard.tsx         # 笔记卡片
 │   │   └── ThemeToggle.tsx      # 主题切换
-│   ├── contexts/            # React Context
-│   │   └── ThemeContext.tsx     # 主题状态管理
-│   ├── hooks/              # 自定义 Hooks
-│   │   └── useNotes.ts          # 笔记 CRUD 操作
-│   ├── pages/              # 页面
+│   ├── pages/                   # 页面
 │   │   ├── NotesList.tsx        # 笔记列表页
 │   │   └── EditorPage.tsx       # 编辑器页
-│   ├── types/              # 类型定义
-│   │   └── note.ts              # 笔记类型
-│   ├── utils/              # 工具函数
-│   │   └── storage.ts           # LocalStorage 封装
-│   ├── App.tsx             # 应用入口
-│   └── index.css           # 全局样式
-├── vite.config.ts          # Vite 配置
+│   ├── shared/                  # 共享模块
+│   │   ├── types/               # 类型定义
+│   │   │   └── note.ts          # 笔记类型
+│   │   └── ui/                  # 基础 UI 组件
+│   │       ├── Button.tsx
+│   │       ├── Card.tsx
+│   │       └── Input.tsx
+│   ├── store/                   # Zustand 状态管理
+│   │   ├── noteSlice.ts         # 笔记状态
+│   │   ├── themeSlice.ts        # 主题状态
+│   │   └── uiSlice.ts           # UI 状态
+│   ├── test/                    # 测试配置
+│   │   └── setup.ts
+│   ├── App.tsx                  # 应用入口
+│   └── index.css                # 全局样式
+├── vitest.config.ts             # Vitest 配置
 └── package.json
 ```
 
